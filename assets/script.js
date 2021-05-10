@@ -2,7 +2,7 @@
 let nav = 0 ;
 // this is to kepp track in which month the calendar is
 let clicked = null;
-// for the clickanble day in the calendar
+// for the clickable day in the calendar
 let events;
 if(localStorage.getItem('events')){
     events = JSON.parse.localStorage.getItem('events');
@@ -11,6 +11,12 @@ if(localStorage.getItem('events')){
 }
 
 // initialize event and then load event from localStorage. If there is no event set event to an empty array
+
+const presentdt = new Date();
+const prdate = presentdt.getDate();
+const prmonth = presentdt.getMonth();
+const pryear = presentdt.getFullYear();
+//initialize the present date (the date the program is accessed) for references
 
 // initialize some constant variable
 const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -61,12 +67,11 @@ function saveEvent() {
   }
 }
 
-
-
 // initialize function load
 function load(){
-    // load the current day for references
     const dt = new Date();
+    // load the current day for references
+    
 
     if (nav !== 0) {
     dt.setMonth(new Date().getMonth() + nav);
@@ -89,8 +94,38 @@ function load(){
         day: 'numeric'
     });
     const paddingDays = weekdays.indexOf(dateString.split(', ')[0]);
-    let displayMonth = dt.toLocaleDateString('en-us', {month: 'long'});
-    document.getElementById('month-display').innerText = `${displayMonth} ${year}`;
+    //let displayMonth = dt.toLocaleDateString('en-us', {month: 'long'});
+    //document.getElementById('month-display').innerText = `${displayMonth}`;
+    //document.getElementById('year-display').innerText = `${year}`;
+    
+    let monthDropdown = document.getElementById('month-display');
+    for(let i, j = 0; i = monthDropdown.options[j]; j++){
+      if(i.value == month){
+        monthDropdown.selectedIndex = j;
+        break;
+      }
+    }
+    //set default month selection
+
+    let yearDropdown = document.getElementById('year-display');
+    let currentYear = pryear + 20;
+    let earliestYear = pryear - 20;
+    while(currentYear >= earliestYear){
+      let yearOption = document.createElement('option');
+      yearOption.text = currentYear;
+      yearOption.value = currentYear;
+      yearDropdown.add(yearOption);
+      currentYear -= 1;
+    }
+    //create year dropdown list
+
+    for(let i, j = 0; i = yearDropdown.options[j]; j++) {
+      if(i.value == year) {
+          yearDropdown.selectedIndex = j;
+          break;
+      }
+    }
+    //set default year selection
 
     calendar.innerHTML='';
     for(let i=1; i<=paddingDays + daysInMonth; ++i){
@@ -116,6 +151,24 @@ function deleteEvent() {
 
 
 function initButtons() {
+  let prevYear = pryear;
+  let prevMonth = prmonth;
+  //initialize default value
+
+  document.getElementById('month-display').addEventListener('change', () => {
+    let monthDropdown = document.getElementById('month-display');
+    nav = nav + (monthDropdown.value - prevMonth);
+    prevMonth = monthDropdown.value;
+    load();
+  })
+
+  document.getElementById('year-display').addEventListener('change', () => {
+    let yearDropdown = document.getElementById('year-display');
+    nav = nav + ((yearDropdown.value - prevYear)*12);
+    prevYear = yearDropdown.value;
+    load();
+  })
+
   document.getElementById('next-button').addEventListener('click', () => {
     nav++;
     load();

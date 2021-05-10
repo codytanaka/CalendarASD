@@ -23,6 +23,15 @@ button {
   display: flex;
   justify-content: space-between;
 }
+#dropdownNav{
+  display: flex;
+}
+#month-display{
+  padding-right: 5px;
+}
+#year-display{
+  padding-left: 5px;
+}
 #header button {
   background-color:#92a1d1;
 }
