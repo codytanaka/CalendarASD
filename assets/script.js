@@ -25,6 +25,7 @@ const newEventModal = document.getElementById('newEventModal');
 const deleteEventModal = document.getElementById('deleteEventModal');
 const backDrop = document.getElementById('modalBackDrop');
 const eventTitleInput = document.getElementById('eventTitleInput');
+const editTitleInput = document.getElementById('editTitleInput');
 
 function openModal(date) {
   clicked = date;
@@ -51,6 +52,20 @@ function closeModal() {
   load();
 }
 
+function editEvent(){
+  events = events.filter(e => e.date !== clicked);
+  localStorage.setItem('events', JSON.stringify(events));
+
+  events.push({
+    date: clicked,
+    title: updateEventInput.value,
+  });
+  localStorage.setItem('events', JSON.stringify(events));
+  updateEventInput.value="";
+  
+  closeModal();
+}
+
 function saveEvent() {
   if (eventTitleInput.value) {
     eventTitleInput.classList.remove('error');
@@ -60,7 +75,7 @@ function saveEvent() {
       title: eventTitleInput.value, 
     });
 
-    localStorage.setItem('event', JSON.stringify(events));
+    localStorage.setItem('events', JSON.stringify(events));
     closeModal();
   } else {
     eventTitleInput.classList.add('error');
@@ -181,9 +196,27 @@ function initButtons() {
 
   document.getElementById('saveButton').addEventListener('click', saveEvent);
   document.getElementById('cancelButton').addEventListener('click', closeModal);
+  document.getElementById('editButton').addEventListener('click', editEvent);
   document.getElementById('deleteButton').addEventListener('click', deleteEvent);
   document.getElementById('closeButton').addEventListener('click', closeModal);
 }
 
+function startTime() {
+  var today = new Date();
+  var h = today.getHours();
+  var m = today.getMinutes();
+  var s = today.getSeconds();
+  m = checkTime(m);
+  s = checkTime(s);
+  document.getElementById('txt').innerHTML =
+  h + ":" + m + ":" + s;
+  var t = setTimeout(startTime, 1000);
+}
+function checkTime(i) {
+  if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+  return i;
+}
+
+startTime();
 initButtons();
 load();
