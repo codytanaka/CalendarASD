@@ -5,7 +5,7 @@ let clicked = null;
 // for the clickable day in the calendar
 let events;
 if(localStorage.getItem('events')){
-    events = JSON.parse.localStorage.getItem('events');
+    events = JSON.parse(localStorage.getItem('events')) ;
 }else {
     events = [];
 }
