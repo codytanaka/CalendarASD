@@ -116,11 +116,20 @@ button {
 #cancelButton, #deleteButton {
   background-color: #d36c6c;
 }
-#saveButton, #closeButton {
+#saveButton, #closeButton ,#addNewEventButton{
   background-color: #92a1d1;
 }
-#eventText {
+
+
+#eventText li{
   font-size: 14px;
+  padding: 20px;
+  background-color: #92a1d1;
+  margin: 5px;
+  border-radius: 10px;
+  list-style-type:none;
+  display: flex;
+  
 }
 #modalBackDrop {
   display: none;

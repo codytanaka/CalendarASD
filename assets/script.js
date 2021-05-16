@@ -25,22 +25,68 @@ const newEventModal = document.getElementById('newEventModal');
 const deleteEventModal = document.getElementById('deleteEventModal');
 const backDrop = document.getElementById('modalBackDrop');
 const eventTitleInput = document.getElementById('eventTitleInput');
-const editTitleInput = document.getElementById('editTitleInput');
+const updateEventInput = document.getElementById('updateEventInput');
+
+
+
 
 function openModal(date) {
   clicked = date;
+  const eventForDay = events.filter(e => e.date === clicked);
+ 
+ //console.log(eventForDay);
+ 
+  //array of events per day
 
-  const eventForDay = events.find(e => e.date === clicked);
+  
+  //display only the event per day (turning it into array)
+  const jdd = Object.values(eventForDay).map(Obj => Obj.title); 
+ 
+  //to turn the array into div
+  function makeUL(array) {
+    // Create the list element:
+    var list = document.createElement('ul');
+    var item = [];
+    for (var i = 0; i < array.length; i++) {
+        // Create the list item:
+        item = document.createElement('li');
 
-  if (eventForDay) {
-    document.getElementById('eventText').innerText = eventForDay.title;
-    deleteEventModal.style.display = 'block';
-  } else {
-    newEventModal.style.display = 'block';
+
+
+        // Set its contents:
+        item.appendChild(document.createTextNode(array[i]));
+
+        // Add it to the list:
+        list.appendChild(item);
+    }
+
+  
+ 
+    // Finally, return the constructed list:
+    return list;
+
+  
   }
 
+// Add the contents of options[0] to #foo:
+document.getElementById('eventText').appendChild(makeUL(jdd));
+
+  
+  
+  // if (eventForDay) {
+    
+  //     document.getElementById('eventText').innerText = eventForDay.title;
+  
+  //   //document.getElementById('eventText').innerText = eventForDay.title;
+  //   //document.getElementById('eventText').innerText = eventForDay.title;
+  deleteEventModal.style.display = 'block';
+  // } else {
+  //   newEventModal.style.display = 'block';
+  // }
+ 
   backDrop.style.display = 'block';
 }
+
 
 function closeModal() {
   eventTitleInput.classList.remove('error');
@@ -48,7 +94,11 @@ function closeModal() {
   deleteEventModal.style.display = 'none';
   backDrop.style.display = 'none';
   eventTitleInput.value = '';
+  updateEventInput.value = '';
   clicked = null;
+  document.getElementById('eventText').innerHTML='';
+  
+
   load();
 }
 
@@ -79,6 +129,23 @@ function saveEvent() {
     closeModal();
   } else {
     eventTitleInput.classList.add('error');
+  }
+}
+
+//to add new event
+function addNewEvent() {
+  if (updateEventInput.value) {
+    updateEventInput.classList.remove('error');
+
+    events.push({
+      date: clicked,
+      title: updateEventInput.value, 
+    });
+
+    localStorage.setItem('events', JSON.stringify(events));
+    closeModal();
+  } else {
+    updateEventInput.classList.add('error');
   }
 }
 
@@ -194,7 +261,9 @@ function initButtons() {
     load();
   });
 
+
   document.getElementById('saveButton').addEventListener('click', saveEvent);
+  document.getElementById('addNewEventButton').addEventListener('click', addNewEvent);
   document.getElementById('cancelButton').addEventListener('click', closeModal);
   document.getElementById('editButton').addEventListener('click', editEvent);
   document.getElementById('deleteButton').addEventListener('click', deleteEvent);
