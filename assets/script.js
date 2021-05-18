@@ -27,63 +27,95 @@ const backDrop = document.getElementById('modalBackDrop');
 const eventTitleInput = document.getElementById('eventTitleInput');
 const updateEventInput = document.getElementById('updateEventInput');
 
-
-
-
 function openModal(date) {
   clicked = date;
-  const eventForDay = events.filter(e => e.date === clicked);
- 
- //console.log(eventForDay);
+
+  var eventForDay = events.filter(e => e.date === clicked);
  
   //array of events per day
 
-  
   //display only the event per day (turning it into array)
-  const jdd = Object.values(eventForDay).map(Obj => Obj.title); 
- 
-  //to turn the array into div
+  var jdd = Object.values(eventForDay).map(Obj => Obj.title); 
+  
+  //to turn the array into list 
   function makeUL(array) {
+    
     // Create the list element:
     var list = document.createElement('ul');
-    var item = [];
+   
+   // var myNodelist = document.getElementById('li');
+
     for (var i = 0; i < array.length; i++) {
         // Create the list item:
         item = document.createElement('li');
-
-
-
+       
         // Set its contents:
         item.appendChild(document.createTextNode(array[i]));
+       
+        //myNodelist[i].appendChild(span);
 
         // Add it to the list:
         list.appendChild(item);
+       
     }
 
   
- 
+  
     // Finally, return the constructed list:
     return list;
-
+    
   
   }
 
-// Add the contents of options[0] to #foo:
-document.getElementById('eventText').appendChild(makeUL(jdd));
+  // Add the contents of options[0] to #foo:
+  document.getElementById('eventText').appendChild(makeUL(jdd));
 
   
+  //to add the close button
+  var myNodelist = document.getElementsByTagName('li');
+  var i;
+
+  for (i = 0; i < myNodelist.length; i++) {
+    var span = document.createElement("SPAN");
+    var txt = document.createTextNode("\u00D7");
+    span.className = "close";
+    span.appendChild(txt);
+    myNodelist[i].appendChild(span);
+   
+  }
+
+  //to delete the event when the close button is clicked
+  var close = document.getElementsByClassName("close");
+  var i;
+  for (i = 0; i < close.length; i++) {
+    close[i].onclick = function() {
+      var div = this.parentElement;
+      div.remove();
+      updateLocalStorage();
+      
+    }
+     
+  }
   
-  // if (eventForDay) {
+  //to update the local storage
+  function updateLocalStorage() {
+    const eventEl = document.querySelectorAll("li");
     
-  //     document.getElementById('eventText').innerText = eventForDay.title;
-  
-  //   //document.getElementById('eventText').innerText = eventForDay.title;
-  //   //document.getElementById('eventText').innerText = eventForDay.title;
-  deleteEventModal.style.display = 'block';
-  // } else {
-  //   newEventModal.style.display = 'block';
-  // }
+    const eventtemp = [];
+    
+    eventEl.forEach((eventEl) => {
+        eventtemp.push({
+            date:clicked,
+            title:eventEl.firstChild.nodeValue.trim(),
+        });
+    });
+    
+    localStorage.setItem("events", JSON.stringify(eventtemp));
  
+  }
+ 
+  deleteEventModal.style.display = 'block';
+  
   backDrop.style.display = 'block';
 }
 
@@ -97,9 +129,9 @@ function closeModal() {
   updateEventInput.value = '';
   clicked = null;
   document.getElementById('eventText').innerHTML='';
-  
-
+  document.getElementsByClassName('li').innerHTML='';
   load();
+  location.reload();
 }
 
 function editEvent(){

@@ -141,3 +141,20 @@ button {
   position: absolute;
   background-color: rgba(0,0,0,0.8);
 }
+
+.close {
+  position: relative;
+  right: 0;
+  top: 0;
+  padding: 12px 16px 12px 16px;
+  background-color:rgb(192, 255, 255);
+  margin-left: 20px;
+  border-radius: 10px;
+  
+}
+
+.close:hover {
+  background-color: #f44336;
+  color: white;
+  border-radius: 10px;
+}
