@@ -1,0 +1,16 @@
+1. ok fisrt explanation , the code structure is fkd up from the beginning so yeaah there is that,
+ definetly need some work to clean that mess.
+
+2. the backlog itself is thoughtless and in the end it causes problems
+	- why you need to put backlog to add event and delete event(singularly )if in the end you need to add
+		code to add and delete multiple event 
+		(bruh moment)
+
+	- the backlog didnt state to edit multiple evnt , but since now it contains multiple events, 
+	  	a new backlog needs to be integrated in order for that function to work.
+		(the current edit event function doesnt work now )
+
+
+	
+ 
+	   
