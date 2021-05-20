@@ -37,41 +37,68 @@ function openModal(date) {
   //display only the event per day (turning it into array)
   var jdd = Object.values(eventForDay).map(Obj => Obj.title); 
   
-  //to turn the array into list 
-  function makeUL(array) {
-    
-    // Create the list element:
-    var list = document.createElement('ul');
-   
-   // var myNodelist = document.getElementById('li');
-
-    for (var i = 0; i < array.length; i++) {
-        // Create the list item:
-        item = document.createElement('li');
-       
-        // Set its contents:
-        item.appendChild(document.createTextNode(array[i]));
-       
-        //myNodelist[i].appendChild(span);
-
-        // Add it to the list:
-        list.appendChild(item);
-       
-    }
-
-  
-  
-    // Finally, return the constructed list:
-    return list;
-    
-  
-  }
-
-  // Add the contents of options[0] to #foo:
+  // Add the contents 
   document.getElementById('eventText').appendChild(makeUL(jdd));
 
+  addCloseEventButton();
   
-  //to add the close button
+  deleteMultipleEvent();
+
+  deleteEventModal.style.display = 'block';
+  
+  backDrop.style.display = 'block';
+  
+}
+
+//to turn the array into list 
+function makeUL(array) {
+    
+  // Create the list element:
+  var list = document.createElement('ul');
+ 
+ // var myNodelist = document.getElementById('li');
+
+  for (var i = 0; i < array.length; i++) {
+      // Create the list item:
+      item = document.createElement('li');
+     
+      // Set its contents:
+      item.appendChild(document.createTextNode(array[i]));
+     
+      //myNodelist[i].appendChild(span);
+
+      // Add it to the list:
+      list.appendChild(item);
+     
+  }
+
+
+
+  // Finally, return the constructed list:
+  return list;
+  
+
+}
+
+//to update the local storage
+function updateLocalStorage() {
+  const eventEl = document.querySelectorAll("li");
+  
+  const eventtemp = [];
+  
+  eventEl.forEach((eventEl) => {
+      eventtemp.push({
+          date:clicked,
+          title:eventEl.firstChild.nodeValue.trim(),
+      });
+  });
+  
+  localStorage.setItem("events", JSON.stringify(eventtemp));
+
+}
+
+//to add the close button
+function addCloseEventButton(){
   var myNodelist = document.getElementsByTagName('li');
   var i;
 
@@ -81,10 +108,13 @@ function openModal(date) {
     span.className = "close";
     span.appendChild(txt);
     myNodelist[i].appendChild(span);
-   
+  
   }
+}
 
-  //to delete the event when the close button is clicked
+//to delete the event when the close button is clicked
+function deleteMultipleEvent(){
+
   var close = document.getElementsByClassName("close");
   var i;
   for (i = 0; i < close.length; i++) {
@@ -94,30 +124,10 @@ function openModal(date) {
       updateLocalStorage();
       
     }
-     
+    
   }
-  
-  //to update the local storage
-  function updateLocalStorage() {
-    const eventEl = document.querySelectorAll("li");
-    
-    const eventtemp = [];
-    
-    eventEl.forEach((eventEl) => {
-        eventtemp.push({
-            date:clicked,
-            title:eventEl.firstChild.nodeValue.trim(),
-        });
-    });
-    
-    localStorage.setItem("events", JSON.stringify(eventtemp));
- 
-  }
- 
-  deleteEventModal.style.display = 'block';
-  
-  backDrop.style.display = 'block';
-}
+
+} 
 
 
 function closeModal() {
@@ -134,6 +144,7 @@ function closeModal() {
   location.reload();
 }
 
+//untuk sementara ini gabisa dipake karena ini gabisa edit multiple event
 function editEvent(){
   events = events.filter(e => e.date !== clicked);
   localStorage.setItem('events', JSON.stringify(events));
@@ -257,6 +268,7 @@ function load(){
     }
 }
 
+//untuk sementara ini jadi delete all (ngapus semua event dlm 1 hari)
 function deleteEvent() {
   events = events.filter(e => e.date !== clicked);
   localStorage.setItem('events', JSON.stringify(events));

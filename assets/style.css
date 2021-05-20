@@ -99,6 +99,7 @@ button {
   left: calc(50% - 175px);
   position: absolute;
   font-family: sans-serif;
+  
 }
 #eventTitleInput {
   padding: 10px;
@@ -112,12 +113,15 @@ button {
 }
 #eventTitleInput.error {
   border: 2px solid red;
+  margin-top: 20px;
 }
 #cancelButton, #deleteButton {
   background-color: #d36c6c;
+  margin-top: 20px;
 }
-#saveButton, #closeButton ,#addNewEventButton{
+#saveButton, #closeButton ,#addNewEventButton,#editButton{
   background-color: #92a1d1;
+  
 }
 
 
@@ -129,8 +133,11 @@ button {
   border-radius: 10px;
   list-style-type:none;
   display: flex;
-  
+  word-break: break-word;
 }
+
+
+
 #modalBackDrop {
   display: none;
   top: 0px;
@@ -142,19 +149,27 @@ button {
   background-color: rgba(0,0,0,0.8);
 }
 
+#updateEventInput{
+  min-width: 310px;
+  display: flex;
+  justify-content: center;
+}
+
 .close {
   position: relative;
   right: 0;
   top: 0;
-  padding: 12px 16px 12px 16px;
-  background-color:rgb(192, 255, 255);
+  padding: 6px 8px 6px 8px;
+  background-color: #e8f4fa;
   margin-left: 20px;
-  border-radius: 10px;
-  
+  border-radius: 2px;
+  display: flex;
+ 
 }
 
 .close:hover {
   background-color: #f44336;
   color: white;
   border-radius: 10px;
+  border-radius: 2px;
 }
